@@ -238,7 +238,9 @@ impl Executor {
             .kill()
             .await
             .map_err(|e| ExecuteError::Socket(e.to_string()))?;
-        std::fs::remove_file(sock_path).map_err(|e| ExecuteError::Socket(e.to_string()))?;
+        tokio::fs::remove_file(sock_path)
+            .await
+            .map_err(|e| ExecuteError::Socket(e.to_string()))?;
         debug!("Socket is now destroyed and the socket file doesn't exist anymore");
         self.socket_process = None;
         Ok(())
