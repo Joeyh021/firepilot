@@ -28,6 +28,7 @@
 
 use std::{fs::copy, path::Path};
 
+use thiserror::Error;
 use tracing::{debug, info, instrument};
 
 use crate::{
@@ -35,13 +36,16 @@ use crate::{
     executor::{Action, Executor},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum FirepilotError {
     /// Mostly problems related to directories error or unavailable files
+    #[error("Failed to setup the machine, reason: {0}")]
     Setup(String),
     /// Related to communication with the socket to configure the microVM which failed
+    #[error("Failed to configure the microVM, reason: {0}")]
     Configure(String),
     /// The process didn't start properly or an error occurred while trying to run it
+    #[error("Failed to start the microVM, reason: {0}")]
     Execute(String),
 }
 

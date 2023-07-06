@@ -52,6 +52,7 @@
 use crate::executor::Executor;
 
 use firepilot_models::models::{BootSource, Drive, NetworkInterface};
+use thiserror::Error;
 
 pub mod drive;
 pub mod executor;
@@ -65,11 +66,13 @@ fn assert_not_none<T>(key: &str, value: &Option<T>) -> Result<(), BuilderError> 
     }
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Error)]
 pub enum BuilderError {
     /// The field is required but was not provided in the builder object
+    #[error("Missing required field, reason: {0}")]
     MissingRequiredField(String),
     /// Happens when using auto methods to detect firecracker /jailer binary
+    #[error("Binary not found, reason: {0}")]
     BinaryNotFound(String),
 }
 
