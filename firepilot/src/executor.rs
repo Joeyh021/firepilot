@@ -104,12 +104,7 @@ pub struct Executor {
 impl Executor {
     /// Create a new Executor with no implementation, and with id "default"
     pub fn new() -> Executor {
-        Executor {
-            firecracker: None,
-            socket_process: None,
-            id: "default".to_string(),
-            client: Client::unix(),
-        }
+        Self::default()
     }
     /// Create a new Executor with the firecracker binary
     pub fn new_with_firecracker(firecracker: FirecrackerExecutor) -> Executor {
@@ -308,6 +303,17 @@ impl Executor {
         std::fs::create_dir_all(self.chroot())
             .map_err(|e| ExecuteError::WorkspaceCreation(e.to_string()))?;
         Ok(())
+    }
+}
+
+impl Default for Executor {
+    fn default() -> Self {
+        Executor {
+            firecracker: None,
+            socket_process: None,
+            id: "default".to_string(),
+            client: Client::unix(),
+        }
     }
 }
 

@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::builder::{assert_not_none, Builder, BuilderError};
 use firepilot_models::models::Drive;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct DriveBuilder {
     pub drive_id: Option<String>,
     pub path_on_host: Option<PathBuf>,
@@ -13,12 +13,7 @@ pub struct DriveBuilder {
 
 impl DriveBuilder {
     pub fn new() -> DriveBuilder {
-        DriveBuilder {
-            drive_id: None,
-            path_on_host: None,
-            is_root_device: false,
-            is_read_only: false,
-        }
+        Self::default()
     }
 
     pub fn with_drive_id(mut self, drive_id: String) -> DriveBuilder {

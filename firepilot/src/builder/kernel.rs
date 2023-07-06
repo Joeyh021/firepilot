@@ -3,7 +3,7 @@ use firepilot_models::models::BootSource;
 
 use super::assert_not_none;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct KernelBuilder {
     pub boot_args: Option<String>,
     pub initrd_path: Option<String>,
@@ -12,11 +12,7 @@ pub struct KernelBuilder {
 
 impl KernelBuilder {
     pub fn new() -> KernelBuilder {
-        KernelBuilder {
-            boot_args: None,
-            initrd_path: None,
-            kernel_image_path: None,
-        }
+        Self::default()
     }
 
     pub fn with_boot_args(mut self, boot_args: String) -> KernelBuilder {

@@ -10,7 +10,7 @@ use crate::{
 
 use super::assert_not_none;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct FirecrackerExecutorBuilder {
     chroot: Option<String>,
     exec_binary: Option<PathBuf>,
@@ -18,10 +18,7 @@ pub struct FirecrackerExecutorBuilder {
 
 impl FirecrackerExecutorBuilder {
     pub fn new() -> FirecrackerExecutorBuilder {
-        FirecrackerExecutorBuilder {
-            chroot: None,
-            exec_binary: None,
-        }
+        Self::default()
     }
 
     /// Tries to determine if `firecracker` binary exists in the `$PATH` variable, if it does, it will

@@ -2,7 +2,7 @@ use firepilot_models::models::{NetworkInterface, RateLimiter};
 
 use super::{assert_not_none, Builder, BuilderError};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct NetworkInterfaceBuilder {
     guest_mac: Option<String>,
     host_dev_name: Option<String>,
@@ -13,13 +13,7 @@ pub struct NetworkInterfaceBuilder {
 
 impl NetworkInterfaceBuilder {
     pub fn new() -> NetworkInterfaceBuilder {
-        NetworkInterfaceBuilder {
-            guest_mac: None,
-            host_dev_name: None,
-            iface_id: None,
-            rx_rate_limiter: None,
-            tx_rate_limiter: None,
-        }
+        Self::default()
     }
 
     pub fn with_guest_mac(mut self, guest_mac: String) -> NetworkInterfaceBuilder {

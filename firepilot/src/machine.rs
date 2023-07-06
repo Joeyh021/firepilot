@@ -50,7 +50,7 @@ pub enum FirepilotError {
 }
 
 /// An instance of microVM which can be created and deployed easily
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Machine {
     /// Current microVM executor with applied configuration
     executor: Executor,
@@ -58,9 +58,7 @@ pub struct Machine {
 
 impl Machine {
     pub fn new() -> Self {
-        Machine {
-            executor: Executor::new(),
-        }
+        Self::default()
     }
 
     fn copy<P, Q>(from: P, to: Q) -> Result<(), FirepilotError>
