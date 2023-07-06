@@ -334,9 +334,16 @@ impl Execute for FirecrackerExecutor {
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
+            .kill_on_drop(true)
             .spawn()
             .map_err(|e| ExecuteError::CommandExecution(e.to_string()))?;
         Ok(command)
+    }
+}
+
+impl Drop for FirecrackerExecutor {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.chroot);
     }
 }
 
