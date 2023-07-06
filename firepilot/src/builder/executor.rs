@@ -76,7 +76,7 @@ impl FirecrackerExecutorBuilder {
         Self::find_binary_from_env_location()
             .or_else(Self::find_binary_from_path)
             .or_else(Self::find_binary_from_current_directory)
-            .map(|p| Ok(p))
+            .map(Ok)
             .unwrap_or(Err(BuilderError::BinaryNotFound("Check if FIRECRACKER_LOCATION environment variable is correctly set. For more information check https://docs.rs/firepilot/ ".to_string())))
     }
 

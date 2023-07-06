@@ -62,7 +62,7 @@ pub mod network_interface;
 fn assert_not_none<T>(key: &str, value: &Option<T>) -> Result<(), BuilderError> {
     match value {
         Some(_) => Ok(()),
-        None => return Err(BuilderError::MissingRequiredField(key.to_string())),
+        None => Err(BuilderError::MissingRequiredField(key.to_string())),
     }
 }
 

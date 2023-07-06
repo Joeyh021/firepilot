@@ -35,7 +35,7 @@ pub trait Execute {
     /// Execute a command onto the binary behind the executor
     ///
     /// It is only used to spawn the executor process, not to send commands to it
-    fn spawn_binary_child(&self, args: &Vec<String>) -> Result<Child, ExecuteError>;
+    fn spawn_binary_child(&self, args: &[String]) -> Result<Child, ExecuteError>;
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -128,10 +128,7 @@ impl Executor {
 
     /// Return the configured executor, or panic if none is configured
     fn executor(&self) -> &dyn Execute {
-        match &self.firecracker {
-            Some(firecracker) => return firecracker,
-            None => panic!("No executor found"),
-        }
+        self.firecracker.as_ref().expect("No executor")
     }
 
     #[instrument(skip(self), fields(id = %self.id))]
@@ -216,7 +213,7 @@ impl Executor {
         let executor = self.executor();
         let sock = self.chroot().join("firecracker.socket");
 
-        let child = executor.spawn_binary_child(&vec![
+        let child = executor.spawn_binary_child(&[
             "--api-sock".to_string(),
             sock.into_os_string().into_string().unwrap(),
         ])?;
@@ -333,7 +330,7 @@ impl Execute for FirecrackerExecutor {
         PathBuf::from(&self.chroot)
     }
 
-    fn spawn_binary_child(&self, args: &Vec<String>) -> Result<Child, ExecuteError> {
+    fn spawn_binary_child(&self, args: &[String]) -> Result<Child, ExecuteError> {
         let command = Command::new(&self.exec_binary)
             .args(args)
             // FIXME: Implement logging
